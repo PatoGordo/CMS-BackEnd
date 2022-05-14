@@ -2,7 +2,7 @@ import { fakeDB } from "@/databases/fake-db";
 import { CMS, ICMS } from "@/entities/CMS";
 import { ICMSRepository } from "@/repositories/interfaces/ICMSRepository";
 import { validateDataToStructure } from "@/utils/validateData";
-import {v4 } from "uuid"
+import { v4 } from "uuid";
 
 export class FakeDBCMSRepository implements ICMSRepository {
   async createCMS(cms: ICMS): Promise<ICMS> {
