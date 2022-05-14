@@ -1,6 +1,6 @@
 export async function validateString(
-  string: string[] | string,
-  whatWrong: string[] | string
+  string?: string[] | string,
+  whatWrong?: string[] | string
 ) {
   if (typeof string === "string" && typeof whatWrong === "string") {
     if (!string || string.trim() === "") {

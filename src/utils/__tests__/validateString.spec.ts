@@ -1,6 +1,6 @@
 import { validateString } from "../validateString";
 
-describe("Validate String", () => {
+describe("Validate String Tests", () => {
   it("Should to be valid", async () => {
     const isValid = await validateString("test", "test");
 

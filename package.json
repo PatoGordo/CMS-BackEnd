@@ -7,7 +7,7 @@
     "build": "tsc && tsc-alias && uglifyjs-folder dist -e -x .js -o dist",
     "serve": "node dist/server.js",
     "server": "yarn build && yarn serve",
-    "test": "jest --detectOpenHandles",
+    "test": "jest --detectOpenHandles --verbose",
     "lint-staged": "eslint --fix 'src/**/*.ts'"
   },
   "dependencies": {

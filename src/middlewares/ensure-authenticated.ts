@@ -1,6 +1,7 @@
 import { DefaultError } from "@/types/error";
 import { userExistsUseCase } from "@/useCases/Auth";
 import { Request, Response, NextFunction } from "express";
+import { validateString } from "@/utils/validateString";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 
@@ -17,13 +18,11 @@ export async function ensureAuthenticated(
 ) {
   const headerTOKEN = req.headers.authorization;
 
-  const token = headerTOKEN?.split("Bearer")[1].trim();
+  let token = headerTOKEN?.split("Bearer")[1].trim();
 
-  if (!token || token.trim() === "") {
-    return res.status(400).json({
-      message: '"token" é um parametro obrigatorio na requisição'
-    });
-  }
+  await validateString(token, "token");
+
+  token = token as string;
 
   if (!process.env.JWT_SECRET) {
     throw new Error("A unknown error has occured, try again!");
@@ -37,7 +36,7 @@ export async function ensureAuthenticated(
 
     if (result === false) {
       return res.status(400).json({
-        message: "Esse não é um usuário valido!"
+        message: "This isn't a valid user!"
       });
     }
 
@@ -45,9 +44,9 @@ export async function ensureAuthenticated(
 
     next();
   } catch (err) {
-    if ((err as Error).message === "invalid token") {
+    if ((err as Error).message === "jwt expired") {
       return res.status(440).json({
-        message: "Sua sessão expirou, faça login novamente e tente de novo!"
+        message: "Your session has expired, please login again!"
       });
     }
 
