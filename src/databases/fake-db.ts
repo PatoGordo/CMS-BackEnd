@@ -1,3 +1,5 @@
-import { Product } from "@/entities/Product";
+import { IUser } from "@/entities/User";
 
-export const db: Product[] = [];
+export const fakeDB: { users: IUser[] } = {
+  users: []
+};

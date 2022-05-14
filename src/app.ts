@@ -1,6 +1,7 @@
 import express, { Application } from "express";
 import cors from "cors";
 import { routes } from "@/routes";
+import { connectToDB } from "./databases/mongo";
 
 class App {
   public app: Application;
@@ -8,6 +9,7 @@ class App {
   constructor() {
     this.app = express();
 
+    this.database();
     this.middlewares();
     this.routes();
   }
@@ -19,6 +21,10 @@ class App {
 
   private routes() {
     this.app.use(routes);
+  }
+
+  private async database() {
+    await connectToDB();
   }
 }
 

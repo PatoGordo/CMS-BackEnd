@@ -1,6 +1,7 @@
 import { pathsToModuleNameMapper } from "ts-jest/utils";
 
 export default {
+  detectOpenHandles: false,
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
