@@ -61,4 +61,19 @@ export class FakeDBCMSRepository implements ICMSRepository {
       throw err;
     }
   }
+
+  async validateAPIKey({
+    id,
+    api_key
+  }: {
+    id: string;
+    api_key: string;
+  }): Promise<boolean> {
+    let cmsAPIKey = fakeDB.cms.find((_cms) => _cms.id === id)?.api_key;
+
+    if (cmsAPIKey === api_key) {
+      return true;
+    }
+    return false;
+  }
 }

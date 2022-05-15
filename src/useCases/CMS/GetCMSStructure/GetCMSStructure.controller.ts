@@ -1,18 +1,16 @@
 import { validateString } from "@/utils/validateString";
 import { Request, Response } from "express";
 import { ValidateAPIKeyUseCase } from "../ValidateAPIKey/ValidateAPIKey.useCase";
-import { ValidateDataToStructureUseCase } from "../ValidateDataToStructure/ValidateDataToStructure.useCase";
-import { InsertCMSDataUseCase } from "./InsertCMSData.useCase";
+import { GetCMSStructureUseCase } from "./GetCMSStructure.useCase";
 
-export class InsertCMSDataController {
+export class GetCMSStructureController {
   constructor(
-    private insertCMSDataUseCase: InsertCMSDataUseCase,
-    private validateAPIKeyUseCase: ValidateAPIKeyUseCase,
-    private validateDataToStructureUseCase: ValidateDataToStructureUseCase
+    private getCMSStructureUseCase: GetCMSStructureUseCase,
+    private validateAPIKeyUseCase: ValidateAPIKeyUseCase
   ) {}
 
   async execute(req: Request, res: Response): Promise<Response> {
-    const { id, data } = req.body;
+    const { id } = req.body;
     const { api_key } = req.params;
 
     try {
@@ -27,15 +25,11 @@ export class InsertCMSDataController {
         throw new Error("This is a invalid api_key");
       }
 
-      await this.validateDataToStructureUseCase.execute({
-        data,
+      const result = await this.getCMSStructureUseCase.execute({
         id
       });
 
-      const result = await this.insertCMSDataUseCase.execute({ id, data });
-
-      return res.status(201).json({
-        message: "Data inserted to the CMS",
+      return res.status(200).json({
         result
       });
     } catch (err) {

@@ -1,5 +1,5 @@
 import { ICMSRepository } from "@/repositories/interfaces/ICMSRepository";
-import { GetCMSDataDTO } from "./getCMSData.dto";
+import { GetCMSDataDTO } from "./GetCMSData.dto";
 
 export class GetCMSDataUseCase {
   constructor(private repository: ICMSRepository) {}

@@ -12,4 +12,11 @@ export interface ICMSRepository {
     id: string;
     data: any;
   }): Promise<any>;
+  validateAPIKey({
+    id,
+    api_key
+  }: {
+    id: string;
+    api_key: string;
+  }): Promise<boolean>;
 }

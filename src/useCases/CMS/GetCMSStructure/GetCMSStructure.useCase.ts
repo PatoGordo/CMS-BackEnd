@@ -1,5 +1,5 @@
 import { ICMSRepository } from "@/repositories/interfaces/ICMSRepository";
-import { GetCMSStructureDTO } from "./getCMSStructure.dto";
+import { GetCMSStructureDTO } from "./GetCMSStructure.dto";
 
 export class GetCMSStructureUseCase {
   constructor(private repository: ICMSRepository) {}

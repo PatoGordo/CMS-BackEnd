@@ -51,6 +51,7 @@ export class FakeDBAuthRepository implements IAuthRepository {
       user
     };
   }
+
   async userExists({ id }: { id: string }): Promise<boolean> {
     const user = fakeDB.users.find((usr) => usr.id === id);
 
@@ -60,6 +61,7 @@ export class FakeDBAuthRepository implements IAuthRepository {
       return false;
     }
   }
+
   async isEmailAlreadyUsed({ email }: { email: string }): Promise<boolean> {
     const user = fakeDB.users.find((usr) => usr.email === email);
 

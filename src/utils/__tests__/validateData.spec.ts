@@ -21,6 +21,8 @@ describe("Validate Data Tests", () => {
 
     let res = validateDataToStructure(strucure, data);
 
-    await expect(res).rejects.toThrow('"email" have erros in the composition.');
+    await expect(res).rejects.toThrow(
+      '"email" field doesn\'t follow the structure definitions.'
+    );
   });
 });

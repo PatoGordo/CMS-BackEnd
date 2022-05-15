@@ -20,7 +20,7 @@ export async function validateDataToStructure(
         throw new Error(
           `"${
             (structure as IStructure)[field].name
-          }" have erros in the composition.`
+          }" field doesn't follow the structure definitions.`
         );
       }
     })

@@ -1,10 +1,11 @@
 import { fakeDB } from "@/databases/fake-db";
 import { FakeDBCMSRepository } from "@/repositories/implementations/fake/FakeDBCMSRepository";
 import { CreateCMSUseCase } from "../CreateCMS/CreateCMS.useCase";
-import { GetCMSDataUseCase } from "../getCMSData/getCMSData.useCase";
-import { GetCMSStructureUseCase } from "../getCMSStructure/getCMSStructure.useCase";
+import { GetCMSDataUseCase } from "../GetCMSData/GetCMSData.useCase";
+import { GetCMSStructureUseCase } from "../GetCMSStructure/GetCMSStructure.useCase";
 import { InsertCMSDataUseCase } from "../InsertCMSData/InsertCMSData.useCase";
-import { ValidateDataToStructureUseCase } from "../validateDataToStructure/validateDataToStructure.useCase";
+import { ValidateAPIKeyUseCase } from "../ValidateAPIKey/ValidateAPIKey.useCase";
+import { ValidateDataToStructureUseCase } from "../ValidateDataToStructure/ValidateDataToStructure.useCase";
 
 describe("CMS Tests", () => {
   const repository = new FakeDBCMSRepository();
@@ -90,13 +91,6 @@ describe("CMS Tests", () => {
   });
 
   it("Validate data to structure as valid", async () => {
-    let structure = {
-      email: {
-        type: "string",
-        name: "email"
-      }
-    };
-
     const validateDataToStructureUseCase = new ValidateDataToStructureUseCase(
       repository
     );
@@ -112,13 +106,6 @@ describe("CMS Tests", () => {
   });
 
   it("Validate data to structure as invalid", async () => {
-    let structure = {
-      email: {
-        type: "string",
-        name: "email"
-      }
-    };
-
     const validateDataToStructureUseCase = new ValidateDataToStructureUseCase(
       repository
     );
@@ -130,6 +117,57 @@ describe("CMS Tests", () => {
       }
     });
 
-    expect(res).rejects.toThrow('"email" have erros in the composition.');
+    expect(res).rejects.toThrow(
+      '"email" field doesn\'t follow the structure definitions.'
+    );
+  });
+
+  it("Api key should to be valid", async () => {
+    const id = "627fb2ffc2cd1ca696312eaa";
+    const api_key = "12d76d74-f5a4-47a6-9f97-6cb5a6aa8ce7";
+
+    fakeDB.cms.push({
+      name: "News Letter",
+      owner_id: "1231231",
+      authorized_urls: [],
+      api_key,
+      data: [],
+      structure: { email: { type: "string", name: "email" } },
+      id
+    });
+
+    const validateAPIKeyUseCase = new ValidateAPIKeyUseCase(repository);
+
+    const res = await validateAPIKeyUseCase.execute({
+      id,
+      api_key
+    });
+
+    expect(res).toEqual(true);
+  });
+
+  it("Api key should to be invalid", async () => {
+    const id = "627fb2ffc2cd1ca696312eaa";
+
+    fakeDB.cms = [
+      {
+        name: "News Letter",
+        owner_id: "1231231",
+        authorized_urls: [],
+        api_key: "12312312312312312",
+        data: [],
+        structure: { email: { type: "string", name: "email" } },
+        id
+      }
+    ];
+
+    const validateAPIKeyUseCase = new ValidateAPIKeyUseCase(repository);
+
+    const res = await validateAPIKeyUseCase.execute({
+      id,
+      api_key: "12d76d74-f5a4-47a6-9f97-6cb5a6aa8ce7"
+    });
+
+    expect(res).toEqual(false);
   });
 });

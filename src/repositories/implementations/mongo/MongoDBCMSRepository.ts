@@ -73,4 +73,28 @@ export class MongoDBCMSRepository implements ICMSRepository {
       throw err;
     }
   }
+
+  async validateAPIKey({
+    id,
+    api_key
+  }: {
+    id: string;
+    api_key: string;
+  }): Promise<boolean> {
+    try {
+      const cms = await CMS.findOne({ id });
+
+      if (!cms) {
+        throw new Error("This CMS does not exists");
+      }
+
+      if (cms.api_key === api_key) {
+        return true;
+      }
+
+      return false;
+    } catch (err) {
+      throw err;
+    }
+  }
 }

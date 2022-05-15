@@ -1,5 +1,5 @@
 import { ICMSRepository } from "@/repositories/interfaces/ICMSRepository";
-import { ValidateDataToStructureDTO } from "./validateDataToStructure.dto";
+import { ValidateDataToStructureDTO } from "./ValidateDataToStructure.dto";
 
 export class ValidateDataToStructureUseCase {
   constructor(private repository: ICMSRepository) {}
