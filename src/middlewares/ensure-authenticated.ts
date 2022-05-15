@@ -18,6 +18,12 @@ export async function ensureAuthenticated(
 ) {
   const headerTOKEN = req.headers.authorization;
 
+  if (!headerTOKEN) {
+    return res.status(400).json({
+      message: "This isn't a valid user!"
+    });
+  }
+
   let token = headerTOKEN?.split("Bearer")[1].trim();
 
   await validateString(token, "token");
