@@ -19,6 +19,16 @@ export class MongoDBCMSRepository implements ICMSRepository {
     }
   }
 
+  async getUserCMSs({ uid }: { uid: string }): Promise<(ICMS | undefined)[]> {
+    try {
+      let userCMSs = await CMS.find({ owner_id: uid });
+
+      return userCMSs;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   async insertCMSData({ id, data }: { id: string; data: any }): Promise<any> {
     try {
       await CMS.findOneAndUpdate(

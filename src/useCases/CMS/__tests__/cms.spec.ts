@@ -3,6 +3,7 @@ import { FakeDBCMSRepository } from "@/repositories/implementations/fake/FakeDBC
 import { CreateCMSUseCase } from "../CreateCMS/CreateCMS.useCase";
 import { GetCMSDataUseCase } from "../GetCMSData/GetCMSData.useCase";
 import { GetCMSStructureUseCase } from "../GetCMSStructure/GetCMSStructure.useCase";
+import { GetUserCMSsUseCase } from "../GetUserCMSs/GetUserCMSs.useCase";
 import { InsertCMSDataUseCase } from "../InsertCMSData/InsertCMSData.useCase";
 import { ValidateAPIKeyUseCase } from "../ValidateAPIKey/ValidateAPIKey.useCase";
 import { ValidateDataToStructureUseCase } from "../ValidateDataToStructure/ValidateDataToStructure.useCase";
@@ -169,5 +170,34 @@ describe("CMS Tests", () => {
     });
 
     expect(res).toEqual(false);
+  });
+
+  it("Get User CMSs", async () => {
+    fakeDB.cms = [
+      {
+        name: "News Letter",
+        owner_id: "1231231",
+        authorized_urls: [],
+        api_key: "12312312312312312",
+        data: [],
+        structure: { email: { type: "string", name: "email" } },
+        id: "123123"
+      },
+      {
+        name: "News Letter 2",
+        owner_id: "1231231",
+        authorized_urls: [],
+        api_key: "123123123123aasdasda12312",
+        data: [],
+        structure: { email: { type: "string", name: "email" } },
+        id: "123"
+      }
+    ];
+
+    const useCase = new GetUserCMSsUseCase(repository);
+
+    const res = await useCase.execute({ uid: "1231231" });
+
+    expect(res.length).toEqual(2);
   });
 });

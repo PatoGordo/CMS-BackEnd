@@ -16,6 +16,16 @@ export class FakeDBCMSRepository implements ICMSRepository {
     return newCMS;
   }
 
+  async getUserCMSs({ uid }: { uid: string }): Promise<(ICMS | undefined)[]> {
+    const userCMSs = fakeDB.cms.map((_cms) => {
+      if (_cms.owner_id === uid) {
+        return _cms;
+      }
+    });
+
+    return userCMSs;
+  }
+
   async insertCMSData({ id, data }: { id: string; data: any }): Promise<any> {
     fakeDB.cms.forEach((_cms) => {
       if (_cms.id === id) {
